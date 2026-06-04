@@ -1,40 +1,43 @@
-<<<<<<< HEAD
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+MediMind AI 🧠
+MediMind AI is an intelligent, 24/7 medical assistant chatbot built with Next.js, Gemini 2.0 Flash, and MongoDB. It features a stunning 3D glassmorphism interface and provides detailed, evidence-informed responses to health queries, medicine searches, and drug interactions.
 
-## Getting Started
+🌟 Features
+Conversational AI: Powered by Google's latest Gemini 2.0 Flash model.
+Dynamic Imagery: Automatically generates and displays relevant images for queries using Pollinations AI.
+Secure Authentication: Full registration and login system powered by MongoDB, Mongoose, bcryptjs, and JWT session tokens.
+Premium UI/UX: Built with a fully responsive frosted-glass aesthetic over an animated Three.js particle background.
+Offline Fallback Mode: Gracefully handles API rate limits by providing simulated, perfectly-formatted medical responses.
+Markdown Formatting: Renders clean, bulleted lists and clickable reference links directly in the chat.
+🚀 Tech Stack
+Frontend: Next.js (App Router), React, CSS (Glassmorphism), Three.js (Background)
+Backend: Next.js Serverless API Routes
+Database: MongoDB & Mongoose
+Authentication: JSON Web Tokens (JWT) & bcryptjs
+AI Integration: @google/genai SDK
+⚙️ Getting Started
+1. Clone the repository
+```bash git clone https://github.com/your-username/AI_chatbot.git cd AI_chatbot ```
 
-First, run the development server:
+2. Install dependencies
+```bash npm install ```
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+3. Set up Environment Variables
+Create a .env.local file in the root directory and add the following keys: ```env
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Google Gemini API Key
+GEMINI_API_KEY="your_google_gemini_api_key_here"
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+MongoDB Connection String (Atlas or Local)
+MONGODB_URI="mongodb://127.0.0.1:27017/chatbot"
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+JWT Secret for secure sessions
+JWT_SECRET="generate_a_random_secure_string_here" ```
 
-## Learn More
+4. Run the Development Server
+```bash npm run dev ``` Open http://localhost:3000 in your browser to see the application!
 
-To learn more about Next.js, take a look at the following resources:
+🔒 Authentication Flow
+The application strictly protects the /chat route. Users must create an account on the landing page /register or sign in via /login. Data is securely stored in your MongoDB database.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-=======
-# AI_chatbot
->>>>>>> 0cb352c65392830e385769f79da71dcf0f17eb59
+⚠️ Disclaimer
+MediMind AI provides informational assistance only. It cannot diagnose, treat, or replace the advice of a licensed healthcare professional.
