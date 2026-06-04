@@ -23,6 +23,7 @@ Your response must ALWAYS be formatted in Markdown and MUST include the followin
 If the user describes a severe condition, FIRST provide the comprehensive answer and links, then optionally add a brief, polite note at the end reminding them to consult a doctor.`;
 
 export async function POST(request: Request) {
+  let query = "";
   try {
     const { messages } = await request.json();
     
@@ -31,6 +32,7 @@ export async function POST(request: Request) {
     }
 
     const lastMessage = messages[messages.length - 1];
+    query = lastMessage?.content?.toLowerCase() || "";
 
     if (!ai) {
       // Fallback Mock Logic if no API Key is provided
@@ -38,7 +40,7 @@ export async function POST(request: Request) {
       
       // Simple keyword-based mock for Professional Referral
       const urgentKeywords = ['chest pain', 'heart attack', 'bleeding', 'can\'t breathe', 'stroke', 'emergency'];
-      if (urgentKeywords.some(keyword => lastMessage.content.toLowerCase().includes(keyword))) {
+      if (urgentKeywords.some(keyword => query.includes(keyword))) {
         responseContent += `\n\n⚠️ PROFESSIONAL REFERRAL RECOMMENDED: Based on your query, please consult a licensed healthcare professional or visit an emergency room immediately. This chatbot provides informational assistance only and cannot diagnose or treat medical conditions.`;
       }
 
@@ -71,7 +73,34 @@ export async function POST(request: Request) {
   } catch (error: any) {
     console.error('Chat API Error:', error);
     if (error.status === 429 || (error.message && error.message.includes('429'))) {
-      return NextResponse.json({ error: '⚠️ **API Quota Exceeded:** The provided Gemini API key has hit its rate limit or free tier quota for today. Please wait, or use a different key.' }, { status: 429 });
+      // Offline fallback for demo purposes when quota is exhausted
+      let topic = "Medicine";
+      if (query.includes("metformin")) topic = "Metformin";
+      else if (query.includes("burn")) topic = "Burn%20Treatment";
+      else if (query.includes("ibuprofen") || query.includes("aspirin")) topic = "Painkillers";
+
+      const fallbackContent = `![${topic}](https://placehold.co/600x300/102030/2dd4bf?text=${topic})
+      
+### Offline Fallback Response
+(Your API Quota is currently exhausted, providing a simulated offline answer)
+
+* **Dosage / Usage:** Follow standard medical guidelines for ${topic}. Always consult a healthcare professional.
+* **Side Effects:** May include standard mild reactions. Seek help if symptoms persist.
+
+### Suggested Medicines
+* Generic ${topic} formulation
+* Standard OTC alternatives
+
+### Reference Websites
+* [WebMD Reference](https://www.webmd.com)
+* [Mayo Clinic Guidelines](https://www.mayoclinic.org)`;
+
+      return NextResponse.json({
+        id: Date.now().toString(),
+        type: 'bot',
+        content: fallbackContent,
+        timestamp: new Date()
+      });
     }
     return NextResponse.json({ error: 'Failed to process chat message' }, { status: 500 });
   }
